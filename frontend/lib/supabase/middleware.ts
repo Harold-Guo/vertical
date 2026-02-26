@@ -34,9 +34,9 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith("/login") &&
     !request.nextUrl.pathname.startsWith("/auth")
   ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+    const host = request.headers.get("x-forwarded-host") || request.headers.get("host") || "localhost:3000";
+    const proto = request.headers.get("x-forwarded-proto") || "https";
+    return NextResponse.redirect(`${proto}://${host}/login`);
   }
 
   return supabaseResponse;
