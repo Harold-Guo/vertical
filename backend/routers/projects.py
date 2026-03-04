@@ -1,4 +1,7 @@
+import uuid
+
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 from mock_data.projects import (
     PROJECTS,
@@ -9,8 +12,54 @@ from mock_data.projects import (
     PROJECT_RECORDINGS,
     PROJECT_SETTINGS,
 )
+from mock_data.templates import TEMPLATES
 
 router = APIRouter()
+
+
+class SkillConfig(BaseModel):
+    name: str
+    enabled: bool
+
+
+class AppConfig(BaseModel):
+    name: str
+    connected: bool
+
+
+class CreateProjectBody(BaseModel):
+    templateId: str | None = None
+    name: str
+    company: str
+    status: str = "discovery"
+    dealValue: int | None = None
+    description: str | None = None
+    skills: list[SkillConfig] = []
+    apps: list[AppConfig] = []
+    customPrompt: str | None = None
+
+
+@router.get("/templates")
+def list_templates():
+    return {"templates": TEMPLATES}
+
+
+@router.post("/projects")
+def create_project(body: CreateProjectBody):
+    project_id = str(uuid.uuid4())[:8]
+    new_project = {
+        "id": project_id,
+        "company": body.company,
+        "subtitle": body.name,
+        "status": body.status,
+        "dealValue": body.dealValue or 0,
+        "reps": "0/5",
+        "aiInsight": "New",
+        "activity": "Just created",
+        "forecast": body.dealValue or 0,
+    }
+    PROJECTS.insert(0, new_project)
+    return {"id": project_id}
 
 
 @router.get("/projects")

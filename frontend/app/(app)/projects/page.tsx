@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { api } from "@/lib/api";
 import { PageHeader } from "@/components/ui/page-header";
 import { MetricCard } from "@/components/ui/metric-card";
@@ -33,10 +34,13 @@ export default async function ProjectsPage() {
         <button className="rounded-md bg-page-card px-4 py-2.5 text-sm font-medium text-text-secondary hover:bg-page-border transition-colors">
           All Deals
         </button>
-        <button className="inline-flex items-center gap-2 rounded-md bg-dark-sidebar px-4 py-2.5 text-sm font-medium text-text-light hover:bg-dark-surface transition-colors">
+        <Link
+          href="/projects/new"
+          className="inline-flex items-center gap-2 rounded-md bg-dark-sidebar px-4 py-2.5 text-sm font-medium text-text-light hover:bg-dark-surface transition-colors"
+        >
           <Plus size={14} />
           New Project
-        </button>
+        </Link>
       </div>
 
       <ProjectsTable projects={data.projects} pagination={data.pagination} />

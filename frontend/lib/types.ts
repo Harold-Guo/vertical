@@ -160,6 +160,29 @@ export interface ProjectSettings {
   metrics: { label: string; value: string; trend: string }[];
 }
 
+export interface ProjectTemplate {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  badge?: string;
+  comingSoon?: boolean;
+  skills: AiSkill[];
+  apps: ConnectedApp[];
+}
+
+export interface CreateProjectRequest {
+  templateId?: string;
+  name: string;
+  company: string;
+  status: string;
+  dealValue?: number;
+  description?: string;
+  skills: { name: string; enabled: boolean }[];
+  apps: { name: string; connected: boolean }[];
+  customPrompt?: string;
+}
+
 export interface ProjectsListResponse {
   projects: Project[];
   metrics: {

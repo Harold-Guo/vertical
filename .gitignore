@@ -28,3 +28,4 @@ node_modules/
 
 # Pencil plan files
 *.plan.md
+.mcp.json

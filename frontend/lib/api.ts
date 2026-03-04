@@ -28,9 +28,13 @@ import type {
   RecordingDetail,
   CallAnalysis,
   CoachingData,
+  ProjectTemplate,
+  CreateProjectRequest,
 } from "./types";
 
 export const api = {
+  getTemplates: () => fetchApi<{ templates: ProjectTemplate[] }>("/api/templates"),
+  createProject: (body: CreateProjectRequest) => postApi<{ id: string }>("/api/projects", body),
   getProjects: () => fetchApi<ProjectsListResponse>("/api/projects"),
   getProjectDetail: (id: string) => fetchApi<ProjectDetail>(`/api/projects/${id}`),
   getProjectMeddic: (id: string) => fetchApi<{ sections: MeddicSection[]; summary: string }>(`/api/projects/${id}/meddic`),
