@@ -4,8 +4,8 @@
     {
       "type": "frame",
       "id": "6xSI7",
-      "x": -121,
-      "y": -628,
+      "x": -325,
+      "y": -640,
       "name": "Plaud Files Screen - 1:1 Replica",
       "width": 402,
       "height": 874,
@@ -238,9 +238,10 @@
         {
           "type": "text",
           "id": "uAEfg",
-          "x": 24,
-          "y": 224,
+          "x": 23.98308276730903,
+          "y": 224.14164560235798,
           "name": "file1Title",
+          "rotation": 0.08868790605798935,
           "fill": "$text-black",
           "content": "2025-10-30 15:45:24",
           "fontFamily": "Inter",
@@ -536,8 +537,8 @@
     {
       "type": "frame",
       "id": "Bhrno",
-      "x": 888,
-      "y": 980,
+      "x": 684,
+      "y": 968,
       "name": "Deal Detail",
       "width": 402,
       "height": 927,
@@ -1519,8 +1520,8 @@
     {
       "type": "frame",
       "id": "bZ6em",
-      "x": 3567,
-      "y": 0,
+      "x": 3363,
+      "y": -12,
       "name": "Update CRM - Success",
       "width": 402,
       "height": 874,
@@ -1672,56 +1673,6 @@
                   "fontWeight": "600"
                 }
               ]
-            },
-            {
-              "type": "frame",
-              "id": "Il3Qi",
-              "name": "modeToggle",
-              "gap": 8,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "zT55p",
-                  "name": "robotBtn",
-                  "fill": "$accent-blue",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "Snoms",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "bot",
-                      "iconFontFamily": "lucide",
-                      "fill": "#FFFFFF"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "F049N",
-                  "name": "penBtn",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "oiOtS",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "pen",
-                      "iconFontFamily": "lucide",
-                      "fill": "$text-gray"
-                    }
-                  ]
-                }
-              ]
             }
           ]
         },
@@ -1797,7 +1748,7 @@
                           "id": "gGq2e",
                           "name": "successTitle",
                           "fill": "$accent-green",
-                          "content": "All Updates Complete",
+                          "content": "Updates Complete",
                           "fontFamily": "Inter",
                           "fontSize": 16,
                           "fontWeight": "bold"
@@ -1942,8 +1893,8 @@
     {
       "type": "frame",
       "id": "FhFG7",
-      "x": 3021,
-      "y": 0,
+      "x": 2817,
+      "y": -12,
       "name": "Update CRM - Processing",
       "width": 402,
       "height": 874,
@@ -2093,56 +2044,6 @@
                   "fontFamily": "Inter",
                   "fontSize": 17,
                   "fontWeight": "600"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "pqZg6",
-              "name": "modeToggle",
-              "gap": 8,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "m6QcB",
-                  "name": "robotBtn",
-                  "fill": "$accent-blue",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "6q7i4",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "bot",
-                      "iconFontFamily": "lucide",
-                      "fill": "#FFFFFF"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "2nPir",
-                  "name": "penBtn",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "gTXfp",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "pen",
-                      "iconFontFamily": "lucide",
-                      "fill": "$text-gray"
-                    }
-                  ]
                 }
               ]
             }
@@ -2369,8 +2270,8 @@
     {
       "type": "frame",
       "id": "mzPCA",
-      "x": 399,
-      "y": -1009,
+      "x": 195,
+      "y": -1021,
       "name": "Calendar Onboarding",
       "width": 402,
       "height": 874,
@@ -2944,8 +2845,8 @@
     {
       "type": "frame",
       "id": "h3FJY",
-      "x": 399,
-      "y": 0,
+      "x": 195,
+      "y": -12,
       "name": "For Sales Workbench",
       "width": 402,
       "height": 874,
@@ -3544,14 +3445,26 @@
           "iconFontName": "plus",
           "iconFontFamily": "lucide",
           "fill": "#FFFFFF"
+        },
+        {
+          "type": "text",
+          "id": "Xrq7m",
+          "x": 303,
+          "y": 679,
+          "name": "updateCrmBtn",
+          "fill": "$accent-blue",
+          "content": "Feedback",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "500"
         }
       ]
     },
     {
       "type": "frame",
       "id": "EJGAw",
-      "x": 888,
-      "y": 0,
+      "x": 684,
+      "y": -12,
       "name": "Schedule Detail - Full",
       "width": 402,
       "height": 874,
@@ -4443,8 +4356,8 @@
     {
       "type": "frame",
       "id": "Mhkiw",
-      "x": 1912,
-      "y": 0,
+      "x": 1708,
+      "y": -12,
       "name": "Update CRM - Select",
       "width": 402,
       "height": 874,
@@ -4989,8 +4902,8 @@
     {
       "type": "frame",
       "id": "3wMpv",
-      "x": 2450,
-      "y": 0,
+      "x": 2246,
+      "y": -12,
       "name": "Update CRM - Review",
       "width": 402,
       "height": 874,
@@ -5142,58 +5055,6 @@
                   "fontFamily": "Inter",
                   "fontSize": 17,
                   "fontWeight": "600"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "yLtZT",
-              "name": "modeToggle",
-              "gap": 8,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "Yu47s",
-                  "name": "robotBtn",
-                  "fill": "$accent-blue",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "9r6a1",
-                      "name": "robotIcon",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "bot",
-                      "iconFontFamily": "lucide",
-                      "fill": "#FFFFFF"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "etHS8",
-                  "name": "penBtn",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "Myp2H",
-                      "name": "penIcon",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "pen",
-                      "iconFontFamily": "lucide",
-                      "fill": "$text-gray"
-                    }
-                  ]
                 }
               ]
             }
@@ -6007,8 +5868,8 @@
     {
       "type": "frame",
       "id": "vqq5N",
-      "x": 888,
-      "y": -1009,
+      "x": 684,
+      "y": -1021,
       "name": "CRM Onboarding",
       "width": 402,
       "height": 874,
@@ -6573,8 +6434,8 @@
     {
       "type": "frame",
       "id": "o2b8F",
-      "x": 1391,
-      "y": 0,
+      "x": 1187,
+      "y": -12,
       "name": "Schedule Detail - Recording",
       "width": 399,
       "height": 1006,
@@ -7556,8 +7417,8 @@
     {
       "type": "frame",
       "id": "lDTYH",
-      "x": 2450,
-      "y": 1024,
+      "x": 2246,
+      "y": 1012,
       "name": "Update CRM - Edit Mode",
       "width": 402,
       "height": 874,
@@ -7708,58 +7569,6 @@
                   "fontFamily": "Inter",
                   "fontSize": 17,
                   "fontWeight": "600"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "T3DnL",
-              "name": "modeToggle",
-              "gap": 8,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "H22K6",
-                  "name": "robotBtn",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "3TQ3Z",
-                      "name": "robotIcon",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "bot",
-                      "iconFontFamily": "lucide",
-                      "fill": "$text-gray"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "Mc9mg",
-                  "name": "penBtn",
-                  "fill": "$accent-blue",
-                  "cornerRadius": 6,
-                  "padding": 6,
-                  "justifyContent": "center",
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "icon_font",
-                      "id": "6y9e6",
-                      "name": "penIcon",
-                      "width": 16,
-                      "height": 16,
-                      "iconFontName": "pen",
-                      "iconFontFamily": "lucide",
-                      "fill": "#FFFFFF"
-                    }
-                  ]
                 }
               ]
             }
@@ -8281,6 +8090,20 @@
           ]
         }
       ]
+    },
+    {
+      "type": "rectangle",
+      "id": "QoE7H",
+      "x": 195,
+      "y": 968,
+      "fill": {
+        "type": "image",
+        "enabled": true,
+        "url": "../../feature request.jpg",
+        "mode": "fill"
+      },
+      "width": 396,
+      "height": 847
     }
   ],
   "variables": {
