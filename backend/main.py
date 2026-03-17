@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -8,9 +9,16 @@ from routers import auth, files, sales, deals, schedule, crm_update, integration
 
 app = FastAPI(title="PLAUD API")
 
+_frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3001")
+_allowed_origins = [
+    _frontend_url,
+    "http://localhost:3000",
+    "http://localhost:3001",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
