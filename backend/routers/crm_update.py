@@ -9,12 +9,18 @@ router = APIRouter()
 
 
 @router.get("/crm-update/recordings")
-def get_unsynced_recordings(request: Request, user: dict = Depends(get_current_user)):
+async def get_unsynced_recordings(request: Request, user: dict = Depends(get_current_user)):
     """Return recordings with crm_sync_status=1 (not synced)."""
     user_id = user["id"]
 
     if user_id == "demo_user":
         return UNSYNCED_RECORDINGS
+
+    # Sync PLAUD files first so the unsynced count is accurate
+    import os
+    if os.getenv("PLAUD_CLIENT_ID"):
+        from services.plaud_sync import sync_plaud_files
+        await sync_plaud_files(user_id)
 
     db = get_supabase()
     resp = (
