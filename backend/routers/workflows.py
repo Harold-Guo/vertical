@@ -132,8 +132,20 @@ async def stream_workflow_endpoint(
         prev_analysis_progress = None
         prev_push_progress = None
 
+        consecutive_errors = 0
         while True:
-            workflow = get_workflow(workflow_id)
+            try:
+                workflow = get_workflow(workflow_id)
+            except Exception as e:
+                consecutive_errors += 1
+                logger.warning("SSE poll error for workflow %s (%d/5): %s",
+                               workflow_id, consecutive_errors, e)
+                if consecutive_errors >= 5:
+                    yield f"data: {json.dumps({'error': 'Service temporarily unavailable'})}\n\n"
+                    return
+                await asyncio.sleep(2)
+                continue
+            consecutive_errors = 0
             if not workflow:
                 yield f"data: {json.dumps({'error': 'Workflow not found'})}\n\n"
                 return

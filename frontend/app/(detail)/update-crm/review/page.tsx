@@ -228,8 +228,9 @@ export default function ConfirmUpdatesPage() {
   // ─── SSE connection ──────────────────────────────────────────────────────
 
   useEffect(() => {
-    const wfId = sessionStorage.getItem("crm_workflow_id");
-    if (!wfId) return;
+    const wfIdRaw = sessionStorage.getItem("crm_workflow_id");
+    if (!wfIdRaw) return;
+    const wfId: string = wfIdRaw;
     setWorkflowId(wfId);
 
     api.getWorkflowMessages(wfId).then(setMessages).catch(console.error);
@@ -241,85 +242,114 @@ export default function ConfirmUpdatesPage() {
       }
     }).catch(console.error);
 
-    const es = api.streamWorkflow(wfId);
-    es.onmessage = (event) => {
-      try {
-        const data: WorkflowStreamEvent = JSON.parse(event.data);
-        setWorkflowState(data.workflow_state);
+    let retryCount = 0;
+    const MAX_RETRIES = 5;
+    let currentEs: EventSource | null = null;
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+    let stopped = false;
 
-        if (data.workflow_state < WF.REVIEW) {
-          setSseMessage(
-            data.message || SSE_LABELS[data.workflow_state] || "Processing..."
-          );
-          if (data.analysis_progress) {
-            setSseProgress({
-              completed: data.analysis_progress.completed,
-              total: data.analysis_progress.total,
-            });
-          } else if (data.workflow_state === WF.ANALYZING) {
-            setSseProgress({ completed: 0, total: 0 });
-          } else if (data.tasks_total > 0) {
-            setSseProgress({
-              completed: data.tasks_completed,
-              total: data.tasks_total,
-            });
-          }
-        } else if (data.workflow_state === WF.PUSHING) {
-          // Update push progress from SSE
-          const pp = (data as any).push_progress;
-          if (pp && pp.total > 0) {
-            setPushProgress(pp.percent ?? Math.round((pp.completed / pp.total) * 100));
-          }
-        } else {
-          setSseMessage("");
-          setSseProgress(null);
-          api.getWorkflowMessages(wfId).then(setMessages);
-          // Update per-recording extractions if available from SSE
-          if (data.extractions?.recordings && data.extractions.recordings.length > 0) {
-            setPerRecordingExtractions(data.extractions.recordings);
-          }
+    function connectSSE() {
+      if (stopped) return;
+      const es = api.streamWorkflow(wfId);
+      currentEs = es;
 
-          if (data.workflow_state === WF.DONE) {
-            // Apply all completed — mark everything applied
-            setPushProgress(100);
-            setAppliedRecordings((prev) => {
-              const all = new Set(prev);
-              for (let i = 0; i < totalRecordings; i++) all.add(i);
-              return all;
-            });
-            setTimeout(() => setIsPushing(false), 1500);
-            es.close();
-          } else if (data.workflow_state === WF.REVIEW && isPushing) {
-            // Single recording push completed — back to REVIEW
-            setPushProgress(100);
-            setAppliedRecordings((prev) => new Set(prev).add(currentRecordingIdx));
-            setTimeout(() => {
-              setIsPushing(false);
-              setPushProgress(0);
-              setRecentlyUpdated(new Set());
-              setCardHistory([]);
-              // Advance to next unprocessed recording
-              setCurrentRecordingIdx((currIdx) => {
-                for (let i = 0; i < totalRecordings; i++) {
-                  if (i !== currIdx && !appliedRecordings.has(i) && !skippedRecordings.has(i)) {
-                    return i;
-                  }
-                }
-                return currIdx;
+      es.onmessage = (event) => {
+        retryCount = 0; // Reset on successful message
+        try {
+          const data: WorkflowStreamEvent = JSON.parse(event.data);
+          setWorkflowState(data.workflow_state);
+
+          if (data.workflow_state < WF.REVIEW) {
+            setSseMessage(
+              data.message || SSE_LABELS[data.workflow_state] || "Processing..."
+            );
+            if (data.analysis_progress) {
+              setSseProgress({
+                completed: data.analysis_progress.completed,
+                total: data.analysis_progress.total,
               });
-            }, 1500);
-          } else if (data.workflow_state === WF.FAILED) {
-            setIsPushing(false);
-            es.close();
-          }
-        }
-      } catch (e) {
-        console.error("SSE parse error:", e);
-      }
-    };
+            } else if (data.workflow_state === WF.ANALYZING) {
+              setSseProgress({ completed: 0, total: 0 });
+            } else if (data.tasks_total > 0) {
+              setSseProgress({
+                completed: data.tasks_completed,
+                total: data.tasks_total,
+              });
+            }
+          } else if (data.workflow_state === WF.PUSHING) {
+            // Update push progress from SSE
+            const pp = (data as any).push_progress;
+            if (pp && pp.total > 0) {
+              setPushProgress(pp.percent ?? Math.round((pp.completed / pp.total) * 100));
+            }
+          } else {
+            setSseMessage("");
+            setSseProgress(null);
+            api.getWorkflowMessages(wfId).then(setMessages);
+            // Update per-recording extractions if available from SSE
+            if (data.extractions?.recordings && data.extractions.recordings.length > 0) {
+              setPerRecordingExtractions(data.extractions.recordings);
+            }
 
-    es.onerror = () => es.close();
-    return () => es.close();
+            if (data.workflow_state === WF.DONE) {
+              stopped = true;
+              setPushProgress(100);
+              setAppliedRecordings((prev) => {
+                const all = new Set(prev);
+                for (let i = 0; i < totalRecordings; i++) all.add(i);
+                return all;
+              });
+              setTimeout(() => setIsPushing(false), 1500);
+              es.close();
+            } else if (data.workflow_state === WF.REVIEW && isPushing) {
+              // Single recording push completed — back to REVIEW
+              setPushProgress(100);
+              setAppliedRecordings((prev) => new Set(prev).add(currentRecordingIdx));
+              setTimeout(() => {
+                setIsPushing(false);
+                setPushProgress(0);
+                setRecentlyUpdated(new Set());
+                setCardHistory([]);
+                setCurrentRecordingIdx((currIdx) => {
+                  for (let i = 0; i < totalRecordings; i++) {
+                    if (i !== currIdx && !appliedRecordings.has(i) && !skippedRecordings.has(i)) {
+                      return i;
+                    }
+                  }
+                  return currIdx;
+                });
+              }, 1500);
+            } else if (data.workflow_state === WF.FAILED) {
+              stopped = true;
+              setIsPushing(false);
+              es.close();
+            }
+          }
+        } catch (e) {
+          console.error("SSE parse error:", e);
+        }
+      };
+
+      es.onerror = () => {
+        es.close();
+        if (stopped) return;
+        retryCount++;
+        if (retryCount <= MAX_RETRIES) {
+          const delay = Math.min(1000 * 2 ** (retryCount - 1), 10000);
+          console.warn(`SSE disconnected, retrying in ${delay}ms (${retryCount}/${MAX_RETRIES})`);
+          retryTimer = setTimeout(connectSSE, delay);
+        } else {
+          console.error("SSE max retries reached, giving up");
+        }
+      };
+    }
+
+    connectSSE();
+    return () => {
+      stopped = true;
+      if (retryTimer) clearTimeout(retryTimer);
+      currentEs?.close();
+    };
   }, []);
 
   // Auto-scroll to bottom
