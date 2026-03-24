@@ -324,6 +324,17 @@ export default function SalesPage() {
           </button>
         </div>
 
+        {activeTab !== "deals" && (
+          <div className="mt-5">
+            <StatusBanner
+              state={bannerState}
+              unsyncedCount={unsyncedCount}
+              onDismiss={() => setBannerState("hidden")}
+              onUpdate={() => setShowSelectSheet(true)}
+            />
+          </div>
+        )}
+
         {activeTab === "deals" ? (
           <DealsList />
         ) : isEmpty ? (
@@ -344,16 +355,6 @@ export default function SalesPage() {
         ) : (
           /* Normal state with events */
           <>
-            {/* Status banner */}
-            <div className="mt-5">
-              <StatusBanner
-                state={bannerState}
-                unsyncedCount={unsyncedCount}
-                onDismiss={() => setBannerState("hidden")}
-                onUpdate={() => setShowSelectSheet(true)}
-              />
-            </div>
-
             {/* Loading state */}
             {loading && (
               <div className="pt-8 text-center">
@@ -372,7 +373,6 @@ export default function SalesPage() {
                 <EventGroup key={date} label={date} events={dateEvents} />
               ))}
             </div>
-
           </>
         )}
 

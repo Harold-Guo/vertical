@@ -18,14 +18,25 @@ def _save_new_files(files: list[dict], user_id: str) -> list[dict]:
 
     db = get_supabase()
 
-    # Existing plaud_file_ids for this user
-    query = db.table("recordings").select("plaud_file_id").eq("source_type", 1)
+    # Existing plaud_file_ids and titles for this user
+    query = db.table("recordings").select("plaud_file_id, title").eq("source_type", 1)
     if user_id != "demo_user":
         query = query.eq("user_id", user_id)
     resp = query.execute()
-    existing_ids = {row["plaud_file_id"] for row in (resp.data or [])}
+    existing = {row["plaud_file_id"]: row["title"] for row in (resp.data or [])}
 
-    new_files = [f for f in files if str(f["id"]) not in existing_ids]
+    new_files = [f for f in files if str(f["id"]) not in existing]
+
+    # Update titles that have changed on PLAUD side
+    for f in files:
+        fid = str(f["id"])
+        new_title = f.get("title") or "Untitled"
+        if fid in existing and existing[fid] != new_title:
+            try:
+                db.table("recordings").update({"title": new_title}).eq("plaud_file_id", fid).execute()
+                logger.info("Updated title for PLAUD file %s: %r → %r", fid, existing[fid], new_title)
+            except Exception as e:
+                logger.error("Failed to update title for PLAUD file %s: %s", fid, e)
     if not new_files:
         return []
 
