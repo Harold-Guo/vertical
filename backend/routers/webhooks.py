@@ -613,7 +613,7 @@ async def elevenlabs_transcription_webhook(request: Request):
     db = get_supabase()
 
     # Verify task exists and is in TRANSCRIBING state
-    task_resp = db.table("workflow_tasks").select("id, workflow_id").eq(
+    task_resp = db.table("workflow_tasks").select("id, workflow_id, recording_id").eq(
         "id", task_id
     ).eq("state", 1).execute()  # 1 = TRANSCRIBING
 
