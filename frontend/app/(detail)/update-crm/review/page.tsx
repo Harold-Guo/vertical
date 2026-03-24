@@ -104,6 +104,16 @@ export default function ConfirmUpdatesPage() {
     new Set()
   );
 
+  // Refs for values accessed inside SSE closure (avoids stale closure)
+  const isPushingRef = useRef(isPushing);
+  isPushingRef.current = isPushing;
+  const currentRecordingIdxRef = useRef(currentRecordingIdx);
+  currentRecordingIdxRef.current = currentRecordingIdx;
+  const appliedRecordingsRef = useRef(appliedRecordings);
+  appliedRecordingsRef.current = appliedRecordings;
+  const skippedRecordingsRef = useRef(skippedRecordings);
+  skippedRecordingsRef.current = skippedRecordings;
+
   // Dialogs
   const [showSkipDialog, setShowSkipDialog] = useState(false);
   const [showApplyAllDialog, setShowApplyAllDialog] = useState(false);
@@ -301,10 +311,10 @@ export default function ConfirmUpdatesPage() {
               });
               setTimeout(() => setIsPushing(false), 1500);
               es.close();
-            } else if (data.workflow_state === WF.REVIEW && isPushing) {
+            } else if (data.workflow_state === WF.REVIEW && isPushingRef.current) {
               // Single recording push completed — back to REVIEW
               setPushProgress(100);
-              setAppliedRecordings((prev) => new Set(prev).add(currentRecordingIdx));
+              setAppliedRecordings((prev) => new Set(prev).add(currentRecordingIdxRef.current));
               setTimeout(() => {
                 setIsPushing(false);
                 setPushProgress(0);
@@ -312,7 +322,7 @@ export default function ConfirmUpdatesPage() {
                 setCardHistory([]);
                 setCurrentRecordingIdx((currIdx) => {
                   for (let i = 0; i < totalRecordings; i++) {
-                    if (i !== currIdx && !appliedRecordings.has(i) && !skippedRecordings.has(i)) {
+                    if (i !== currIdx && !appliedRecordingsRef.current.has(i) && !skippedRecordingsRef.current.has(i)) {
                       return i;
                     }
                   }
