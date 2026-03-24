@@ -647,11 +647,12 @@ export default function ConfirmUpdatesPage() {
         .catch(console.error);
     } else {
       // Frontend-driven allDone (all recordings individually applied/skipped)
-      // Build summary from perRecordingExtractions
+      // Build summary only from applied recordings (exclude skipped ones)
       const results: string[] = [];
       const counts: Record<string, { updated: number; created: number }> = {};
 
-      for (const rec of perRecordingExtractions) {
+      for (const [idx, rec] of perRecordingExtractions.entries()) {
+        if (skippedRecordings.has(idx)) continue;
         for (const change of rec.proposed_changes) {
           if (!change.approved) continue;
           if (!counts[change.object_type])
@@ -676,10 +677,10 @@ export default function ConfirmUpdatesPage() {
       }
 
       setCompletionSummary(
-        results.length > 0 ? results : ["CRM updated successfully"]
+        results.length > 0 ? results : ["No changes were applied to CRM"]
       );
     }
-  }, [allDone, workflowState, workflowId]);
+  }, [allDone, workflowState, workflowId, skippedRecordings]);
 
   // ─── Render ──────────────────────────────────────────────────────────────
 
