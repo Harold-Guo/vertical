@@ -339,7 +339,12 @@ async def _complete_with_transcript(task_id: str, transcript: str) -> None:
     workflow = on_task_completed(task_id, transcript)
     if workflow["state"] == WorkflowState.EXTRACTING:
         logger.info("All tasks done for workflow %s, starting analysis", workflow["id"])
-        await run_analysis(workflow["id"])
+        try:
+            await run_analysis(workflow["id"])
+        except Exception as e:
+            logger.error("Workflow %s: analysis failed: %s", workflow["id"], e, exc_info=True)
+            from services.workflow import update_workflow_state
+            update_workflow_state(workflow["id"], WorkflowState.FAILED)
 
 
 async def _run_transcription(task_id: str, recording_id: str, user_id: str) -> None:

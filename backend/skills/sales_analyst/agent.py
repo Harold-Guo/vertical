@@ -122,6 +122,10 @@ async def _run_single_analysis(
                         category_name, time.time() - t0)
         return [], ""
     elapsed = time.time() - t0
+    if not response.text:
+        logger.warning("⏱ TIMING [analysis:%s] empty response at %.1fs, skipping",
+                        category_name, elapsed)
+        return [], ""
     result = json.loads(response.text.strip())
     changes = result.get("proposed_changes", [])
     summary = result.get("summary", "")
@@ -257,9 +261,13 @@ CRM changes being proposed:
         )
 
     t0 = time.time()
-    response = await asyncio.to_thread(_call)
+    try:
+        response = await asyncio.wait_for(asyncio.to_thread(_call), timeout=30)
+    except asyncio.TimeoutError:
+        logger.warning("⏱ TIMING [analysis:summary] timed out at %.1fs", time.time() - t0)
+        return "Meeting analyzed. See proposed changes below."
     elapsed = time.time() - t0
-    summary = response.text.strip()
+    summary = (response.text or "").strip()
     logger.info("⏱ TIMING [analysis:summary] %.1fs — %d chars", elapsed, len(summary))
     return summary
 
