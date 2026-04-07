@@ -1,0 +1,1 @@
+/Users/harold/Projects/plaud/vertical/.claude/skills/gstack/design-shotgun/SKILL.md

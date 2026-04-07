@@ -1,0 +1,1 @@
+/Users/harold/Projects/plaud/vertical/.claude/skills/gstack/land-and-deploy/SKILL.md

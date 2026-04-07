@@ -134,3 +134,19 @@ All prefixed with `/api`:
 - Design source: `pencil/vertical_mvp.pen` — **must use Pencil MCP tools** to read, never Read/Grep
 - Color theme defined in `frontend/app/globals.css` CSS custom properties
 - Key colors: bg #F9F9F9, card #FFFFFF, accent-blue #1A89FF, green #22C55E, red #FB2C36
+
+## Knowledge Base (docs/)
+
+Project docs live in `docs/` as an Obsidian vault. Start from `docs/HOME.md` for navigation.
+
+- Before making product or GTM decisions, read relevant docs in `docs/strategy/`
+- Engineering plans are in `docs/engineering/`
+- Docs use `[[wikilink]]` syntax — resolve to `docs/<path>.md`
+
+## gstack
+
+Use `/browse` from gstack for all web browsing. Never use `mcp__claude-in-chrome__*` tools.
+
+If gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to build the binary and register skills.
+
+Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /design-shotgun, /design-html, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /connect-chrome, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro, /investigate, /document-release, /codex, /cso, /autoplan, /careful, /freeze, /guard, /unfreeze, /gstack-upgrade, /learn.
