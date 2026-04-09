@@ -8,6 +8,11 @@ PLAUD Sales AI Assistant · Internal docs for product, strategy, and engineering
 
 - [[product/gtm-strategy-options]] — GTM 策略方案对比（5个候选路径，优缺点，决策矩阵）
 
+## Plugin Specs (plaud-skills repo)
+
+- [[product/plugin-field-sales]] — Field Sales plugin: transcript → CRM updates (Salesforce)
+- [[product/plugin-obsidian-kb]] — Obsidian KB plugin: PLAUD recordings → knowledge base (via graphify)
+
 ## Engineering
 
 - [[engineering/architecture]] — System architecture, workflow state machine, DB schema
