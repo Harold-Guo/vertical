@@ -1,1 +1,0 @@
-/Users/harold/Projects/plaud/vertical/.claude/skills/gstack/ship/SKILL.md

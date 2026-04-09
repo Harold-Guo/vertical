@@ -1,1 +1,0 @@
-/Users/harold/Projects/plaud/vertical/.claude/skills/gstack/setup-browser-cookies/SKILL.md

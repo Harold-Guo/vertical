@@ -1,1 +1,0 @@
-/Users/harold/Projects/plaud/vertical/.claude/skills/gstack/plan-eng-review/SKILL.md
