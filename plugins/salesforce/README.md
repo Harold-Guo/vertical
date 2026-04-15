@@ -54,15 +54,15 @@ sf org login web
 **Install skills**:
 
 ```bash
-git clone git@github.com:Plaud-AI/plaud-plugins.git
+git clone git@github.com:Harold-Guo/vertical.git
 mkdir -p ~/.claude/skills
-ln -s "$(pwd)/plaud-plugins/plugins/salesforce/skills"/* ~/.claude/skills/
+ln -s "$(pwd)/vertical/plugins/salesforce/skills"/* ~/.claude/skills/
 ```
 
 Skills appear immediately — no restart needed. To update:
 
 ```bash
-cd plaud-plugins && git pull
+cd vertical && git pull
 ```
 
 ### Claude Desktop
@@ -81,10 +81,10 @@ Both commands auto-register in Claude Desktop's config.
 **Step 3 — Upload skills**: clone the repo, then upload each SKILL.md.
 
 ```bash
-git clone git@github.com:Plaud-AI/plaud-plugins.git
+git clone git@github.com:Harold-Guo/vertical.git
 ```
 
-Open Claude Desktop → Customize → Skills → click **+** → upload each `SKILL.md` file from `plaud-plugins/plugins/salesforce/skills/*/SKILL.md`
+Open Claude Desktop → Customize → Skills → click **+** → upload each `SKILL.md` file from `vertical/plugins/salesforce/skills/*/SKILL.md`
 
 **Step 4 — Authenticate** in a Claude Desktop conversation:
 
